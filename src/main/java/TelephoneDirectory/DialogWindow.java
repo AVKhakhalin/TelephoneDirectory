@@ -14,13 +14,23 @@ public class DialogWindow
 
     public final int NUMBER_WORDS = 20;
     public final int NUMBER_WORDS_PER_ROW = 9;
-    public final String[] sampleWords = {"Абрикос", "Киви", "Арбуз", "Вишня", "Черешня", "Нектарин", "Айва", "Малина", "Арбуз", "Черешня", "Манго", "Абрикос", "Виноград", "Памело", "Мандарин", "Апельсин", "Банан", "Абрикос", "Абрикос", "Клубника"};
+    public String[] sampleWords = {"Абрикос", "Киви", "Арбуз", "Вишня", "Черешня", "Нектарин", "Айва", "Малина", "Арбуз", "Черешня", "Манго", "Абрикос", "Виноград", "Памело", "Мандарин", "Апельсин", "Банан", "Абрикос", "Абрикос", "Клубника"};
     JTextField[] textField_1_;
+
+    public String[] defaultFamilies = new String[] {"Агрономов", "Галицын", "Агрономов", "Лукашевич", "Майоров", "Переверзев", "Сидоров", "Яковлев", "Яшин"};
+    public String[] defaultTelephones = new String[] {"89051112233", "89052223344", "89653334455", "89073338899", "89359998877", "89613334411", "89689998877", "89053962383", "89999999999"};
+    JTextField textField_TelephoneSearch;
+    JTextField textField_TelephoneEnter;
+    JTextField textField_FamilyEnter;
+    public SolveTask2 solveTask2;
 
     DialogWindow (int _sizeWidth, int _sizeHeight)
     {
         this.sizeWidth = _sizeWidth;
         this.sizeHeight = _sizeHeight;
+    }
+
+    public DialogWindow() {
     }
 
     public JPanel createContentPane ()
@@ -31,10 +41,12 @@ public class DialogWindow
         totalGUI.setLayout(null);
 
         // Добавляем текст в окно
+        String tabText1 = "&nbsp&nbsp&nbsp";
+        String tabText2 = "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
         JLabel blueLabel = new JLabel("<html><font face=\"MyFont, Verdana, Arial\", size=\"5\"><br>" +
                 "Домашнее задание №10 включало в себя следующее:<br>" +
                 "1. Создать массив с набором слов (10-20 слов, должны встречаться повторяющиеся). Найти и вывести список уникальных слов, из которых состоит массив (дубликаты не считаем). Посчитать, сколько раз встречается каждое слово.<br><br><br><br><br>" +
-                "2. Написать простой класс Телефонный Справочник, который хранит в себе список фамилий и телефонных номеров. В этот телефонный справочник с помощью метода add()<br>можно добавлять записи, а с помощью метода get() искать номер телефона по фамилии. Следует учесть, что под одной фамилией может быть несколько телефонов (в случае однофамильцев), тогда при запросе такой фамилии должны выводиться все телефоны. Желательно не добавлять лишний функционал (дополнительные поля (имя, отчество, адрес), взаимодействие с пользователем через консоль и т.д). Консоль использовать только для вывода результатов проверки телефонного справочника.</html>");
+                "2. Написать простой класс Телефонный Справочник, который хранит в себе список фамилий и телефонных номеров. В этот телефонный справочник с помощью метода add()<br>можно добавлять записи, а с помощью метода get() искать номер телефона по фамилии. Следует учесть, что под одной фамилией может быть несколько телефонов (в случае однофамильцев), тогда при запросе такой фамилии должны выводиться все телефоны. Желательно не добавлять лишний функционал (дополнительные поля (имя, отчество, адрес), взаимодействие с пользователем через консоль и т.д). Консоль использовать только для вывода результатов проверки телефонного справочника.<br><br>Содержание телефонного справочника:" + tabText1 + "Введите фамилию для поиска:<br><br><br>" + tabText2 + "Добавьте фамилию и телефон<br>" + tabText2 + "в телефонный справочник:</html>");
         blueLabel.setLocation(30, 0); // координаты текста
         blueLabel.setSize(sizeWidth - 70, sizeHeight - 100); // размер области с текстом
         blueLabel.setVerticalAlignment(1);
@@ -70,19 +82,56 @@ public class DialogWindow
             }
         }
 
-        // Создание кнопки для задания №2
-        JButton task_2_button = new JButton("Проверить задание");
-        task_2_button.setToolTipText("<html>Нажмите для проверки задания №2</html>");
-        task_2_button.setLocation(700, 464); // это координаты кнопки
-        task_2_button.setSize(150,40 ); // это размер кнопки
-        totalGUI.add(task_2_button);
-        ActionListener actionListener2 = new TestActionListener(2); // Подключение обработчика событий к кнопке
-        task_2_button.addActionListener(actionListener2);
+        // Создание кнопки с поиском контакта для задания №2
+        JButton task_2_1_button = new JButton("Найти телефон");
+        task_2_1_button.setToolTipText("<html>Нажмите для проверки задания №2</html>");
+        task_2_1_button.setLocation(700, 460);
+        task_2_1_button.setSize(150,40 );
+        totalGUI.add(task_2_1_button);
+        ActionListener actionListener2_1 = new TestActionListener(21); // Подключение обработчика событий к кнопке
+        task_2_1_button.addActionListener(actionListener2_1);
+
+        // Создание кнопки с добавлением нового контакта для задания №2
+        JButton task_2_2_button = new JButton("Добавить контакт");
+        task_2_2_button.setToolTipText("<html>Нажмите для проверки задания №2</html>");
+        task_2_2_button.setLocation(700, 555);
+        task_2_2_button.setSize(150,40 );
+        totalGUI.add(task_2_2_button);
+        ActionListener actionListener2_2 = new TestActionListener(22); // Подключение обработчика событий к кнопке
+        task_2_2_button.addActionListener(actionListener2_2);
+
+        // Создание списка для задания №2
+        solveTask2 = new SolveTask2(defaultFamilies, defaultTelephones);
+        totalGUI.add(solveTask2.getTelephoneElements());
+
+        // Создание текстового поля ввода телефона для поиска для задания №2
+        textField_TelephoneSearch = new JTextField(10);
+        textField_TelephoneSearch.setToolTipText("<html>Введите фамилию для поиска в задании №2<br>и нажмите кнопку \"Найти телефон\"</html>");
+        textField_TelephoneSearch.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,16));
+        textField_TelephoneSearch.setBounds(409, 460, 280, 30);
+        textField_TelephoneSearch.setText("");
+        totalGUI.add(textField_TelephoneSearch);
+
+        // Создание текстового поля для ввода фамилии для добавления в телефонный справочник для задания №2
+        textField_FamilyEnter = new JTextField(10);
+        textField_FamilyEnter.setToolTipText("<html>Введите фамилию для добавления в телефонный справочник<br>в задании №2 и нажмите кнопку \"Добавить контакт\"<br>(добавление произойдёт при введении и фамилии, и телефона)</html>");
+        textField_FamilyEnter.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,16));
+        textField_FamilyEnter.setBounds(409, 555, 150, 30);
+        textField_FamilyEnter.setText("");
+        totalGUI.add(textField_FamilyEnter);
+
+        // Создание текстового поля ввода телефона для добавления в телефонный справочник для задания №2
+        textField_TelephoneEnter = new JTextField(10);
+        textField_TelephoneEnter.setToolTipText("<html>Введите телефон для добавления в телефонный справочник<br> в задании №2 и нажмите кнопку \"Добавить контакт\"<br>(добавление произойдёт при введении и фамилии, и телефона)</html>");
+        textField_TelephoneEnter.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,16));
+        textField_TelephoneEnter.setBounds(569, 555, 120, 30);
+        textField_TelephoneEnter.setText("");
+        totalGUI.add(textField_TelephoneEnter);
 
         // Создание кнопки для выхода из программы
         JButton task_EXIT_button = new JButton("Выйти из программы");
         task_EXIT_button.setToolTipText("<html>Нажмите для выхода из программы</html>");
-        task_EXIT_button.setLocation((int) (sizeWidth / 2 - 80), sizeHeight - 98); // это координаты кнопки
+        task_EXIT_button.setLocation((int) (sizeWidth / 2 - 80) + 39, sizeHeight - 98); // это координаты кнопки
         task_EXIT_button.setSize(160,40 ); // это размер кнопки
         totalGUI.add(task_EXIT_button);
         ActionListener actionListener_EXIT = new TestActionListener(0); // Подключение обработчика событий к кнопке
@@ -128,8 +177,47 @@ public class DialogWindow
                         JOptionPane.showMessageDialog(new JFrame(), "<html><font face=\"MyFont, Verdana, Arial\", size=\"4\">Для проверки домашнего задания №1<br>нужно ввести в текстовые поля хотя бы одно слово.<br>Пожалуйста, исправьте размер массива<br>и нажмите на кнопку \"Проверить задание\" ещё раз.</html>", "ОШИБКА", JOptionPane.ERROR_MESSAGE);
                     }
                     break;
-                case 2:
-                    SolveTask2 solveTask2 = new SolveTask2();
+                case 21:
+                    if (textField_TelephoneSearch.getText().length() > 0)
+                    {
+                        String tempOut = solveTask2.searchTelephone(textField_TelephoneSearch.getText());
+                        if (tempOut.length() > 0)
+                        {
+                            if (tempOut.indexOf(",") > 0)
+                            {
+                                System.out.println("В телефонном справочнике по фамилии \"" + textField_TelephoneSearch.getText() + "\" найдены следующие телефоны: " + tempOut);
+                                JOptionPane.showMessageDialog(new JFrame(), "<html><font face=\"MyFont, Verdana, Arial\", size=\"4\">В телефонном справочнике по фамилии \"" + textField_TelephoneSearch.getText() + "\"<br>найдены следующие телефоны: " + tempOut + ".</html>", "ИНФОРМАЦИЯ", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            else
+                            {
+                                System.out.println("В телефонном справочнике по фамилии \"" + textField_TelephoneSearch.getText() + "\" найден один телефон: " + tempOut);
+                                JOptionPane.showMessageDialog(new JFrame(), "<html><font face=\"MyFont, Verdana, Arial\", size=\"4\">В телефонном справочнике по фамилии \"" + textField_TelephoneSearch.getText() + "\"<br>найден один телефон: " + tempOut + ".</html>", "ИНФОРМАЦИЯ", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                        else
+                        {
+                            System.out.println("В телефонном справочнике по фамилии \"" + textField_TelephoneSearch.getText() + "\" не найден ни один телефон");
+                            JOptionPane.showMessageDialog(new JFrame(), "<html><font face=\"MyFont, Verdana, Arial\", size=\"4\">В телефонном справочнике по фамилии \"" + textField_TelephoneSearch.getText() + "\"<br> не найден ни один телефон.</html>", "ИНФОРМАЦИЯ", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("Для проверки поиска телефона по фамилии нужно ввести в поле фамилии хотя бы одно слово и нажать на кнопку \"Нати телефон\".");
+                        JOptionPane.showMessageDialog(new JFrame(), "<html><font face=\"MyFont, Verdana, Arial\", size=\"4\">Для проверки поиска телефона по фамилии<br>нужно ввести в поле фамилии хотя бы одно слово<br>и нажать на кнопку \"Нати телефон\".<br>Пожалуйста, исправьте размер массива<br>и нажмите на кнопку \"Найти телефон\" ещё раз.</html>", "ОШИБКА", JOptionPane.ERROR_MESSAGE);
+                    }
+                    break;
+                case 22:
+                    if ((textField_FamilyEnter.getText().length() > 0) && (textField_TelephoneEnter.getText().length() > 0))
+                    {
+                        String tempOut = solveTask2.addNewContact(textField_FamilyEnter.getText(), textField_TelephoneEnter.getText());
+                        System.out.println(tempOut);
+                        JOptionPane.showMessageDialog(new JFrame(), "<html><font face=\"MyFont, Verdana, Arial\", size=\"4\">" + tempOut + "</html>", "ИНФОРМАЦИЯ", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else
+                    {
+                        System.out.println("Для добавления нового контакта в телефонный справочник нужно обязательно указать и фамилию, и телефон.\nУкажите необходимые данные и нажмите на кнопку \"Добавить контакт\" ещё раз.");
+                        JOptionPane.showMessageDialog(new JFrame(), "<html><font face=\"MyFont, Verdana, Arial\", size=\"4\">Для добавления нового контакта в телефонный справочник<br>нужно обязательно указать и фамилию, и телефон.<br>Укажите необходимые данные и нажмите на кнопку<br>\"Добавить контакт\" ещё раз.</html>", "ОШИБКА", JOptionPane.ERROR_MESSAGE);
+                    }
                     break;
                 default:
                     System.exit(0);

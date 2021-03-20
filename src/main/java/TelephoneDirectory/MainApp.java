@@ -6,7 +6,7 @@ import java.awt.*;
 public class MainApp
 {
     public static final int SIZE_WIDTH = 900;
-    public static final int SIZE_HEIGHT = 700;
+    public static final int SIZE_HEIGHT = 800;
 
     public static void main(String[] args)
     {
